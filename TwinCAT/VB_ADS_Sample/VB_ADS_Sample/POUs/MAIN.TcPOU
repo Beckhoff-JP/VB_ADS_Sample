@@ -3,76 +3,32 @@
   <POU Name="MAIN" Id="{ccd35c68-4c9d-484a-a981-b7061656ed90}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	fb_drand	:DRAND;
-	engine : INT; // 'hEngine' variable in frmMachine form class.
-	deviceUp : INT; // 'hDeviceUp' variable in frmMachine form class.
-	deviceDown : INT; // 'hDeviceDown' variable in frmMachine form class.
-	steps : INT; // 'hSteps' variable in frmMachine form class.
-	count : INT; // 'hCount' variable in frmMachine form class.
-	mem_count :INT;
-	switch : INT; // 'hSwitchNotify' variable in frmMachine form class.
-	cycle_timer : TON;
-	cycle_time : TIME;
+	test_input AT%I* : ARRAY [0..1] OF BOOL;
+	test_output AT%Q* : ARRAY [0..1] OF BOOL;
+	test_value : DINT;
+	test_string: STRING(255);
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[// Switch slow or fast
-IF switch > 0 THEN
-	cycle_time := T#0.5S;
-ELSE
-	cycle_time := T#2S;
+      <ST><![CDATA[
+IF test_value = 16#7FFFFFFF THEN
+	test_value := 0;
 END_IF
 
-// Pulse generator as cycle_timer.Q
-cycle_timer(IN := NOT cycle_timer.Q, PT := cycle_time);
+test_value := test_value + 1;
 
-IF cycle_timer.Q THEN
-	// Random number generator
-	fb_drand();
-	
-	// For numeric value display with random number.
-	count := LREAL_TO_INT(fb_drand.Num * 100);
-	IF count > mem_count THEN
-		deviceUp := 1;
-		deviceDown := 0;
-	ELSE
-		deviceUp := 0;
-		deviceDown := 1;
-	END_IF
-	mem_count := count;
-
-	// For progress bar
-	steps := steps + 2;	
-	IF steps > 100 THEN
-		steps := 0;
-	END_IF
-
-END_IF
 
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="27" Count="2" />
-      <LineId Id="31" Count="1" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="23" Count="0" />
-      <LineId Id="78" Count="0" />
-      <LineId Id="15" Count="0" />
-      <LineId Id="33" Count="0" />
-      <LineId Id="26" Count="0" />
-      <LineId Id="77" Count="0" />
-      <LineId Id="36" Count="0" />
-      <LineId Id="75" Count="1" />
-      <LineId Id="37" Count="0" />
-      <LineId Id="54" Count="6" />
-      <LineId Id="52" Count="0" />
-      <LineId Id="74" Count="0" />
-      <LineId Id="72" Count="1" />
-      <LineId Id="65" Count="2" />
-      <LineId Id="63" Count="0" />
-      <LineId Id="35" Count="0" />
-      <LineId Id="41" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="108" Count="0" />
+      <LineId Id="110" Count="1" />
+      <LineId Id="113" Count="0" />
       <LineId Id="39" Count="0" />
+      <LineId Id="107" Count="0" />
+      <LineId Id="109" Count="0" />
+      <LineId Id="106" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
