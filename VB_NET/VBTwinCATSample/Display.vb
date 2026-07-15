@@ -38,7 +38,7 @@ Public Class Display
 
         ' Notification用設定オブジェクトの作成
         ' Check for change every 100 ms
-        Dim notification_setting = New NotificationSettings(AdsTransMode.OnChange, 100, 0)
+        Dim notification_setting = New NotificationSettings(AdsTransMode.OnChange, 1, 0)
 
         Try
             ''' 変数の値変更イベント登録
@@ -114,9 +114,12 @@ Public Class Display
     ''' <param name="e">イベントハンドラ引数</param>
     Sub SetIn1(e As AdsNotificationEventArgs)
         ' ネイティブバイトオーダへ変換
-        Dim input As UShort = BinaryPrimitives.ReadUInt16LittleEndian(e.Data.Span)
-        ' Byteサイズに切り詰める
-        input = input And &HF
+        Dim input As Byte = 0
+        Dim tmp As Byte() = e.Data.Span.ToArray()
+        If tmp.Length > 0 Then
+            input = tmp(0)
+        End If
+
         If input > 0 Then
             indicator_in_0.Text = "ON"
             indicator_in_0.BackColor = Color.Yellow
@@ -133,9 +136,11 @@ Public Class Display
     ''' <param name="e">イベントハンドラ引数</param>
     Sub SetIn2(e As AdsNotificationEventArgs)
         ' ネイティブバイトオーダへ変換
-        Dim input As UShort = BinaryPrimitives.ReadUInt16LittleEndian(e.Data.Span)
-        ' Byteサイズに切り詰める
-        input = input And &HF
+        Dim input As Byte = 0
+        Dim tmp As Byte() = e.Data.Span.ToArray()
+        If tmp.Length > 0 Then
+            input = tmp(0)
+        End If
         If input > 0 Then
             indicator_in_1.Text = "ON"
             indicator_in_1.BackColor = Color.Yellow
